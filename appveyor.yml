@@ -34,7 +34,7 @@ install:
   - cmake -G "Visual Studio 14 2015" .
 
 build_script:
-  - msbuild bmc.sln /t:getclip /p:Configuration=Release
+  - msbuild Project.sln /t:getclip /p:Configuration=Release
 
 artifacts:
   - path: Release/getclip.exe
