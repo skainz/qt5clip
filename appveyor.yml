@@ -1,0 +1,42 @@
+version: 1.0.{build}
+build:
+  verbosity: minimal
+  project: bmc.sln
+
+configuration: Release
+
+environment:
+  QTDIR: 'C:\projects\bmc\qt5_out_static_runtime'
+  #Qt5_DIR: 'C:\projects\bmc\qt5_out_static_runtime\lib\cmake\Qt5'
+  #XSDDIR: 'C:\Program Files (x86)\CodeSynthesis XSD 4.0'
+  #PATH: 'C:\Program Files (x86)\CodeSynthesis XSD 4.0\bin;%PATH%'
+  #BOOST_ROOT: 'c:\Libraries\boost_1_63_0'
+    
+
+install:
+  - git submodule --quiet update --init --recursive
+  #- curl.exe -s -o xsd-4.0.msi https://www.codesynthesis.com/download/xsd/4.0/windows/i686/xsd-4.0.msi
+  #- msiexec.exe /i xsd-4.0.msi /quiet /qn /norestart /log install.log
+  #- type install.log
+  - curl.exe -s -o qt-static.zip https://familiekainz.at/libs/qt5_static_runtime_4096e387f0592e3dfda5eb12b0d9c32b23d6b7db.zip
+  - 7z x qt-static.zip
+
+
+#before_build:
+#  - cd "%XSDDIR%\xerces-c-3.1.1\projects\Win32\VC10\xerces-all"
+#  - msbuild xerces-all.sln /t:XercesLib /p:PlatformToolset=v140 /P:Configuration="Static Release"
+#  - cd %BOOST_ROOT%
+#  - bootstrap.bat --with-libraries=program_options
+#  - b2.exe --build-type=complete --with-program_options stage
+#  - cd c:\projects\qt5clip
+  - set PATH=%QTDIR%\bin
+  - set CMAKE_PREFIX_PATH=%QTDIR%;%CMAKE_PREFIX_PATH%
+  - cmake -G "Visual Studio 14 2015" -Dbmc_USE_PYTHON=OFF -DXercesC_INCLUDE_DIR="%XSDDIR%\include" -DXercesC_LIBRARY_DEBUG="%XSDDIR%\lib\vc-12.0\xerces-c_3D.lib" -DXercesC_LIBRARY_RELEASE="%XSDDIR%\xerces-c-3.1.1\Build\Win32\VC10\Static Release\xerces-c_static_3.lib"  .
+
+build_script:
+  - msbuild bmc.sln /t:getclip /p:Configuration=Release
+
+artifacts:
+  - path: Release/getclip.exe
+  
+  
