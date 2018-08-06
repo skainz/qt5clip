@@ -29,7 +29,7 @@ install:
 #  - bootstrap.bat --with-libraries=program_options
 #  - b2.exe --build-type=complete --with-program_options stage
 #  - cd c:\projects\qt5clip
-  - set PATH=%QTDIR%\bin
+  - set PATH=%QTDIR%\bin;%PATH%
   - set CMAKE_PREFIX_PATH=%QTDIR%;%CMAKE_PREFIX_PATH%
   - cmake -G "Visual Studio 14 2015" -Dbmc_USE_PYTHON=OFF -DXercesC_INCLUDE_DIR="%XSDDIR%\include" -DXercesC_LIBRARY_DEBUG="%XSDDIR%\lib\vc-12.0\xerces-c_3D.lib" -DXercesC_LIBRARY_RELEASE="%XSDDIR%\xerces-c-3.1.1\Build\Win32\VC10\Static Release\xerces-c_static_3.lib"  .
 
